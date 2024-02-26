@@ -15,6 +15,8 @@ import se.magictechnology.pia12androidfirebase.ui.theme.Pia12androidfirebaseThem
 // Skriva kod. Mera kod.
 // Annan person
 
+// Dev dev testa kod
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
