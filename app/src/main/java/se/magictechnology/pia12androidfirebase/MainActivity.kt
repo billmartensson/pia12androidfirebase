@@ -15,7 +15,7 @@ import se.magictechnology.pia12androidfirebase.ui.theme.Pia12androidfirebaseThem
 // Skriva kod. Mera kod.
 // Annan person
 
-// Dev dev testa kod
+// Dev dev testa kod. Nu funkar det bra
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
