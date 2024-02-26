@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import se.magictechnology.pia12androidfirebase.ui.theme.Pia12androidfirebaseTheme
 
 // Skriva kod
-
+// Annan person
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
