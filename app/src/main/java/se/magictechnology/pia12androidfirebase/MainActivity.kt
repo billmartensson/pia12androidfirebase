@@ -32,6 +32,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    fun dologin() {
+        // massa kod
+    }
 }
 
 @Composable
