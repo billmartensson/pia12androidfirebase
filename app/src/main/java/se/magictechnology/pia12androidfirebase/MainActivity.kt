@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import se.magictechnology.pia12androidfirebase.ui.theme.Pia12androidfirebaseTheme
 
-// Skriva kod
+// Skriva kod. Mera kod.
 
 
 class MainActivity : ComponentActivity() {
