@@ -9,8 +9,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.getValue
@@ -35,12 +43,85 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Startscreen()
                 }
             }
         }
+    }
 
-        /*
+}
+
+@Composable
+fun Startscreen(shopVM : ShopViewmodel = viewModel()) {
+
+    val loggedin by shopVM.loggedin.collectAsState()
+
+    LaunchedEffect(true) {
+        shopVM.checklogin()
+    }
+
+    if(loggedin) {
+        AppNavHost(shopVM = shopVM)
+    } else {
+        Login(shopVM = shopVM) {
+
+        }
+    }
+}
+
+
+enum class NavScreen() {
+    Login,
+    Shoplist,
+    Shopinfo
+}
+
+@Composable
+fun AppNavHost(
+    navController : NavHostController = rememberNavController(),
+    shopVM : ShopViewmodel = viewModel()
+) {
+    NavHost(navController = navController, startDestination = NavScreen.Shoplist.name) {
+        composable(NavScreen.Login.name) {
+            Login(
+                shopVM,
+                goShop = {
+                    navController.navigate(NavScreen.Shoplist.name)
+                }
+            )
+        }
+        composable(NavScreen.Shoplist.name) {
+            Shoppinglist(shopVM, goInfo = {
+                navController.navigate(NavScreen.Shopinfo.name + "/${it.fbid!!}")
+            })
+        }
+        composable(NavScreen.Shopinfo.name + "/{shopid}") {
+            val shopid = it.arguments?.getString("shopid")
+            Shopinfo(shopVM, shopVM.getShopitemForId(shopid!!))
+        }
+    }
+}
+
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    Pia12androidfirebaseTheme {
+        AppNavHost()
+    }
+}
+
+
+data class Fruit(
+    val fruitname : String? = null,
+    val fruitcolor : String? = null,
+    val score : Int? = null
+)
+
+
+/*
         val database = Firebase.database
         val myRef = database.getReference("androidthings")
         //myRef.push().setValue("Tjena")
@@ -62,67 +143,36 @@ class MainActivity : ComponentActivity() {
         }
         */
 
-        /*
-        var auth: FirebaseAuth
-        auth = Firebase.auth
+/*
+var auth: FirebaseAuth
+auth = Firebase.auth
 
-        if(auth.currentUser == null) {
-            Log.i("PIA12DEBUG", "INTE INLOGGAD")
-        } else {
-            Log.i("PIA12DEBUG", "ÄR INLOGGAD")
-            Log.i("PIA12DEBUG", auth.currentUser!!.uid)
-        }
-        */
+if(auth.currentUser == null) {
+    Log.i("PIA12DEBUG", "INTE INLOGGAD")
+} else {
+    Log.i("PIA12DEBUG", "ÄR INLOGGAD")
+    Log.i("PIA12DEBUG", auth.currentUser!!.uid)
+}
+*/
 
-        /*
-        auth.createUserWithEmailAndPassword("android@magictechnology.se", "hemligt").addOnCompleteListener { task ->
-            if(task.isSuccessful) {
-                Log.i("PIA12DEBUG", "REGISTRERING OK")
-            } else {
-                Log.i("PIA12DEBUG", "REGISTRERING FAIL")
-            }
-        }
-        */
-
-        //auth.signOut()
-
-        /*
-        auth.signInWithEmailAndPassword("android@magictechnology.se", "hemligt").addOnCompleteListener { task ->
-            if(task.isSuccessful) {
-                Log.i("PIA12DEBUG", "LOGIN OK")
-            } else {
-                Log.i("PIA12DEBUG", "LOGIN FAIL")
-            }
-        }
-         */
-
-
-    }
-
-    fun dologin() {
-        // massa kod
+/*
+auth.createUserWithEmailAndPassword("android@magictechnology.se", "hemligt").addOnCompleteListener { task ->
+    if(task.isSuccessful) {
+        Log.i("PIA12DEBUG", "REGISTRERING OK")
+    } else {
+        Log.i("PIA12DEBUG", "REGISTRERING FAIL")
     }
 }
+*/
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+//auth.signOut()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Pia12androidfirebaseTheme {
-        Greeting("Android")
+/*
+auth.signInWithEmailAndPassword("android@magictechnology.se", "hemligt").addOnCompleteListener { task ->
+    if(task.isSuccessful) {
+        Log.i("PIA12DEBUG", "LOGIN OK")
+    } else {
+        Log.i("PIA12DEBUG", "LOGIN FAIL")
     }
 }
-
-
-data class Fruit(
-    val fruitname : String? = null,
-    val fruitcolor : String? = null,
-    val score : Int? = null
-)
+ */
